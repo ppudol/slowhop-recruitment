@@ -19,7 +19,6 @@ class ApiController extends AbstractController
     public function getCalendarData(): JsonResponse
     {
         $this->logger->info('Fetching calendar data');
-        $this->calendarFileFetcher->getCalendarData();
 
         return $this->json([
             $this->calendarFileFetcher->getCalendarData()
