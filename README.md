@@ -11,3 +11,12 @@ Zbuduj prosty mikroserwis w oparciu o framework Symfony w wersji 4 lub wyżej. Z
 - Użyj PHP w wersji 7+
 - Buduj serwis z myślą o utrzymaniu go na produkcji, pamiętaj o czytelnym kodzie, logach, etc..
 - BONUS: Wynik działania końcówki z p1 i commanda z p2 zrzuć do pliku i zapisz ten plik w S3. Wymaga to założenia swojego konta w AWS, które do pewnego momentu jest darmowe, więc nie narażasz się w tym wypadku na żadne koszty.
+
+# Odpalanie projektu
+
+`docker compose build`
+`docker compose up -d`
+
+# instalacja zależności composera
+`docker exec slowhop-php-fpm-1 composer install`
+
