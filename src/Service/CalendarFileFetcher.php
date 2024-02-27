@@ -8,7 +8,11 @@ use Psr\Log\LoggerInterface;
 
 class CalendarFileFetcher
 {
-    public function __construct(private string $calendarFileUrl, private HttpClientInterface $httpClient, private LoggerInterface $logger)
+    public function __construct(
+        private string $calendarFileUrl, 
+        private HttpClientInterface $httpClient, 
+        private LoggerInterface $logger, 
+        private S3Uploader $s3Uploader)
     {
     }
 
@@ -89,6 +93,9 @@ class CalendarFileFetcher
 
     public function getCalendarData(): array
     {
-        return $this->parseCalendarData($this->downloadCalendarFile());
+        $calendarData =$this->parseCalendarData($this->downloadCalendarFile());
+        $this->s3Uploader->uploadFile($calendarData);
+
+        return $calendarData;
     }
 }

@@ -25,3 +25,9 @@ services:
     App\Service\CalendarFileFetcher:
         arguments: 
             - '%env(APP_CALENDAR_FILE_URL)%'
+
+    App\Service\S3Uploader:
+        arguments:
+            - '%env(APP_S3_BUCKET_KEY)%'
+            - '%env(APP_S3_BUCKET_SECRET)%'
+            - '%env(APP_S3_BUCKET_NAME)%'
