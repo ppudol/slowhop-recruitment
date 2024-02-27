@@ -10,7 +10,7 @@ services:
             - '8008:80'
 
     php-fpm:
-        build: php-fpm
+        build: ./.docker/php-fpm
         working_dir: /application
         volumes:
             - '.:/application'
