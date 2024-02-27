@@ -14,9 +14,21 @@ Zbuduj prosty mikroserwis w oparciu o framework Symfony w wersji 4 lub wyżej. Z
 
 # Odpalanie projektu
 
-`docker compose build`
-`docker compose up -d`
+```zsh
+docker compose build
+docker compose up -d
+```
+**Uwaga**
+u mnie był problem z uprawnieniami do folderów `var/log/`, `public/uploads` możliwe że będzie potrzebny chmod 
 
 # instalacja zależności composera
-`docker exec slowhop-php-fpm-1 composer install`
+```
+docker exec slowhop-php-fpm-1 composer install
+```
 
+# Upload plików na S3
+W `config/secrets/prod` należy wrzucić plik `prod.decrypt.private.php` który podesłałem na maila.
+
+# Działanie
+Pod adresem `http://localhost:8008/api/get-calendar-data` znajduje się wystawiona końcówka api.
+Komendę uruchamiamy za pomacą `bin/console api:get-calendar-data`.
