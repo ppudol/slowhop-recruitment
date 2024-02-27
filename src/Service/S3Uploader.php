@@ -37,13 +37,19 @@ class S3Uploader
         $key = $this->generateKey();
         $filePath = 'uploads/' . $key . '.json';
 
-        $this->filesystem->dumpFile($filePath, json_encode($fileData));
 
-        $result = $this->s3Client->putObject([
-            'Bucket' => $bucket,
-            'Key' => $key . '.json',
-            'SourceFile' => $filePath
-        ]);
+        try {
+            $this->filesystem->dumpFile($filePath, json_encode($fileData));
+            $result = $this->s3Client->putObject([
+                'Bucket' => $bucket,
+                'Key' => $key . '.json',
+                'SourceFile' => $filePath
+            ]);
+        } catch (\Exception $e) {
+            $this->logger->error('File uploading failed');
+            return false;
+        }
+
 
         if ($result['@metadata']['statusCode'] !== 200) {
             $this->logger->error('File uploading failed');
