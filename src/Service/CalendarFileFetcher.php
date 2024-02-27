@@ -4,10 +4,11 @@ declare(strict_types=1);
 namespace App\Service;
 
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Psr\Log\LoggerInterface;
 
 class CalendarFileFetcher
 {
-    public function __construct(private string $calendarFileUrl, private HttpClientInterface $httpClient)
+    public function __construct(private string $calendarFileUrl, private HttpClientInterface $httpClient, private LoggerInterface $logger)
     {
     }
 
@@ -16,6 +17,7 @@ class CalendarFileFetcher
         $response = $this->httpClient->request('GET', $this->calendarFileUrl);
 
         if ($response->getStatusCode() !== 200) {
+            $this->logger->error('File fetching failed');
             throw new \Exception("Failed to fetch file: HTTP Error {$response->getStatusCode()}");
         }
 
@@ -77,6 +79,7 @@ class CalendarFileFetcher
         $date = \DateTimeImmutable::createFromFormat('Ymd', $dateString);
 
         if ($date === false) {
+            $this->logger->error('Failed to create date from string');
             throw new \InvalidArgumentException('Failed to create date from string');
         }
 
