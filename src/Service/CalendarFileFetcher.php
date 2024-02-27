@@ -25,7 +25,7 @@ class CalendarFileFetcher
     private function parseCalendarData(string $fileContent): array
     {
 
-        $fileLines = explode("\r\n", $fileContent);
+        $fileLines = array_map('trim', explode(PHP_EOL, $fileContent));
         $events = [];
 
         $currentEventData = [];
@@ -51,7 +51,7 @@ class CalendarFileFetcher
 
     private function getLineData(string $lineData): array|null
     {
-        [$key, $value] = explode(':', str_replace("\r\n", '', $lineData));
+        [$key, $value] = explode(':', $lineData);
 
         return match ($key) {
             'UID' => ['id' => $value],
@@ -74,14 +74,13 @@ class CalendarFileFetcher
 
     private function createDateFromString(string $dateString): \DateTimeImmutable
     {
-        $date = \DateTimeImmutable::createFromFormat('Ymd', $dateString)
-            ->setTime(0, 0, 0);
+        $date = \DateTimeImmutable::createFromFormat('Ymd', $dateString);
 
         if ($date === false) {
             throw new \InvalidArgumentException('Failed to create date from string');
         }
 
-        return $date;
+        return $date->setTime(0,0,0);
     }
 
 
