@@ -35,7 +35,7 @@ class CalendarFileFetcher
             }
 
             if ($line === 'END:VEVENT') {
-                $events[] = $currentEventData;
+                $events[] = $this->changeKeysOrder($currentEventData);
                 $currentEventData = [];
                 continue;
             }
@@ -60,6 +60,16 @@ class CalendarFileFetcher
             'DTEND;VALUE=DATE' => ['end' => $this->createDateFromString($value)->format('Y-m-d')],
             default => null
         };
+    }
+
+    private function changeKeysOrder(array $data): array
+    {
+        return [
+            'id' => $data['id'],
+            'start' => $data['start'],
+            'end' => $data['end'],
+            'summary' => $data['summary'],
+        ];
     }
 
     private function createDateFromString(string $dateString): \DateTimeImmutable
